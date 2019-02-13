@@ -1,0 +1,16 @@
+SELECT *
+  FROM (WITH KOPS
+             AS (SELECT F.COLUMN_NAME AS COL1, F.TABLE_NAME AS TABLE_NAME
+                   FROM ALL_TAB_COLUMNS@KOPSLIVE2.XXX.LOCAL F
+                  WHERE 1 = 1 AND F.TABLE_NAME = 'SAL_CONTRACT')
+        SELECT COL1
+          FROM KOPS)
+MINUS
+select * from
+(SELECT *
+   FROM (WITH DWH
+              AS (SELECT FD.COLUMN_NAME AS COL, FD.TABLE_NAME AS TABLE_NAME
+                    FROM ALL_TAB_COLUMNS FD
+                   WHERE 1 = 1 AND FD.TABLE_NAME = 'DIM_CONTRACT')
+         SELECT COL
+           FROM DWH))
